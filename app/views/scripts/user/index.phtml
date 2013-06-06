@@ -1,0 +1,10 @@
+<h2>Users</h2>
+<?php if(count($this->users)>0): ?>
+	<ul>
+	<?php foreach($this->users as $user): ?>
+		<li><?php echo $user['name']; ?></li>
+	<?php endforeach;?>
+	</ul>
+<?php else: ?>
+	<p>No users found</p>
+<?php endif; ?>
