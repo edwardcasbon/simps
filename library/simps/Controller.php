@@ -113,7 +113,6 @@ class Simps_Controller {
 	 * @var mixed $destination
 	 */
 	public static function redirect ($destination) {
-		var_dump($destination);
 		if(gettype($destination) == "array") {
 			$params = "";
 			if(!empty($destination['params'])) {
