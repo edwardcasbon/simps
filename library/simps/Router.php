@@ -106,7 +106,8 @@ class Simps_Router {
 	 */
 	protected function setParams () {
 		$params = array();
-		$firstParams = explode("?", $_SERVER['REQUEST_URI'])[0];
+		$firstParams = explode("?", $_SERVER['REQUEST_URI']);
+		$firstParams = $firstParams[0];
 		$firstParams = explode("/", trim($firstParams, "/"));
 		unset($firstParams[0], $firstParams[1]);
 		if(count($firstParams)>0) {
