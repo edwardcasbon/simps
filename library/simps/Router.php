@@ -81,7 +81,7 @@ class Simps_Router {
 	protected function setController () {
 		$exploded = explode("/", trim($this->request['REQUEST_URI'], "/"));
 		if(!empty($exploded[0])) {
-			$this->controller = str_replace(" ", "", lcfirst(ucwords(str_replace("-", " ", $exploded[0]))));
+			$this->controller = str_replace(" ", "", ucwords(str_replace("-", " ", $exploded[0])));
 		}
 	}
 	
@@ -94,7 +94,9 @@ class Simps_Router {
 	protected function setAction () {
 		$exploded = explode("/", trim($this->request['REQUEST_URI'], "/"));
 		if(!empty($exploded[1])) {
-			$this->action = str_replace(" ", "", lcfirst(ucwords(str_replace("-", " ", $exploded[1]))));
+			$action = ucwords(str_replace("-", " ", $exploded[1]));
+			$action[0] = strtolower($action[0]);
+			$this->action = str_replace(" ", "", $action);
 		}
 	}
 	

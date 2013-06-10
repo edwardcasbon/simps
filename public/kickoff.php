@@ -7,11 +7,11 @@
  */
 
 // Set the include path to include Simps library and app controllers and models.
-$paths =	dirname(__DIR__) . "/app"			 	. PATH_SEPARATOR . 	
-			dirname(__DIR__) . "/app/controllers" 	. PATH_SEPARATOR .
-			dirname(__DIR__) . "/app/models" 		. PATH_SEPARATOR .
-			dirname(__DIR__) . "/app/views" 		. PATH_SEPARATOR .
-			dirname(__DIR__) . "/library" 			. PATH_SEPARATOR;
+$paths =	dirname(dirname(__FILE__)) . "/app" . PATH_SEPARATOR . 	
+			dirname(dirname(__FILE__)) . "/app/controllers" . PATH_SEPARATOR .
+			dirname(dirname(__FILE__)) . "/app/models" . PATH_SEPARATOR .
+			dirname(dirname(__FILE__)) . "/app/views" . PATH_SEPARATOR .
+			dirname(dirname(__FILE__)) . "/library" . PATH_SEPARATOR;
 set_include_path(get_include_path() . PATH_SEPARATOR . $paths);
 
 // Get route details from URL and farm off to controller.

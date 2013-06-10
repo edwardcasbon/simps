@@ -68,8 +68,13 @@ class Simps_Controller {
 		$config = $allConfigs['default'];
 		$serverName = $this->route->request['SERVER_NAME'];
 		if(!empty($allConfigs[$serverName])) {
-			$config = array_replace_recursive($config, $allConfigs[$serverName]);
+			if(function_exists('array_replace_recursive')) {
+				$config = array_replace_recursive($config, $allConfigs[$serverName]);
+			} else {
+				$config = $this->array_replace_recursive($config, $allConfigs[$serverName]);
+			}
 		}
+		$config = $this->parseFlatConfig($config);
 		return $config;
 	}
 	
@@ -127,4 +132,67 @@ class Simps_Controller {
 		header("Location: " . $destination);
 	}
 	
+	/**
+	 * Recursive array replacement for PHP <5.3
+	 *
+	 * @var array $array
+	 * @var array $array1
+	 * @return array
+	 */
+	public function array_replace_recursive ($array, $array1) {
+		$args = func_get_args();
+		$array = $args[0];
+		if (!is_array($array)) {
+			return $array;
+		}
+		for ($i = 1; $i < count($args); $i++) {
+			if (is_array($args[$i])) {
+				$array = $this->recurseArray($array, $args[$i]);
+			}
+		}
+		return $array;
+	}
+	
+	/**
+	 * Recurse an array
+	 *
+	 * @var array $array
+	 * @var array $array1
+	 * @return array
+	 */
+	public function recurseArray ($array, $array1) {
+		foreach ($array1 as $key => $value) {
+			if (!isset($array[$key]) || (isset($array[$key]) && !is_array($array[$key]))) {
+				$array[$key] = array();
+			}
+			if (is_array($value)) {
+				$value = $this->recurseArray($array[$key], $value);
+			}
+			$array[$key] = $value;
+		}
+		return $array;
+	}
+	
+	/**
+	 * Parse a flat config array.
+	 *
+	 * Strip out keys with '.' and create multidimensional
+	 * array.
+	 *
+	 * Needed for PHP 5.2 compatibility.
+	 *
+	 * @var array $config
+	 * @return array
+	 */
+	public function parseFlatConfig ($config) {
+		foreach($config as $key => $value) {
+			if(strpos($key, ".")) {
+				$label = explode(".", $key);
+				$pConfig[$label[0]][$label[1]] = $value;
+			} else {
+				$pConfig[$key] = $value;
+			}
+		}
+		return $pConfig;
+	}
 }
