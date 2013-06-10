@@ -1,6 +1,6 @@
 # Simps
 
-Simps is a **simple** and **easy** to use **PHP MVC framework** with database connection and view templating built in.
+Simps is a **simple** and **easy** to use **PHP MVC framework** with database connection handling and view templating built in.
 
 With Simps you can be building web sites and applications within minutes rather than hours.
 
@@ -13,3 +13,8 @@ With Simps you can be building web sites and applications within minutes rather 
 5. Put your template scripts in the scripts directory (/app/views/scripts/{controller})
 
 Now open it up in the browser, it's really as easy as that.
+
+
+---
+
+Simps has been developed and tested with PHP 5.2.17 and newer. It may also work with previous versions.
