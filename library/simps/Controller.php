@@ -108,8 +108,15 @@ class Simps_Controller {
 	 */
 	public function __destruct () {
 		unset($this->db);
-		$template = $this->route->controller . "/" . $this->route->action . ".phtml";
-		echo $this->view->render($template);
+		$regex = '/(?<!^)((?<![[:upper:]])[[:upper:]]|[[:upper:]](?![[:upper:]]))/';
+		$controller = explode(" ", preg_replace($regex, ' $1', $this->route->controller));
+		if(strtolower($controller[0]) == $this->route->module) {
+			unset($controller[0]);
+		}
+		$controller = strtolower(implode("-", $controller));
+		
+		$template = $this->route->module . "/views/scripts/" . $controller . "/" . $this->route->action . ".phtml";
+		echo $this->view->render($this->route->module, $template);
 	}
 	
 	/**

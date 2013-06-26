@@ -48,15 +48,17 @@ class Simps_View {
 	 * @param string $template The name of the template to render
 	 * @return string The parsed content
 	 */
-	public function render ($template) {
+	public function render ($layoutModule, $template) {
 		ob_start();
-		include("scripts/" . $template);
+		include($template);
 		$output = ob_get_clean();
 		$this->content = $output;
 		if($this->includeLayout) {
 			$layout = (!empty($this->layout)) ? $this->layout : $this->config['layout'];
 			ob_start();
-			include("layouts/{$layout}.phtml");
+			if(!(include($layoutModule . "/views/layouts/{$layout}.phtml"))) {
+				include("default/views/layouts/{$layout}.phtml");
+			}
 			$output = ob_get_clean();
 		}
 		return $output;

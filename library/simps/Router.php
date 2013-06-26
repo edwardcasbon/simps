@@ -16,9 +16,27 @@ class Simps_Router {
 	/**
 	 * The browser request.
 	 *
-	 * var array
+	 * @var array
 	 */
 	public $request;
+	
+	/**
+	 * The registered modules.
+	 *
+	 * @var array
+	 */
+	public $modules;
+	
+	/**
+	 * The requested module.
+	 *
+	 * Defaults to "default" so that if no module
+	 * is recognised then the default module will
+	 * be chosen.
+	 *
+	 * @var string
+	 */
+	public $module = "default";
 	
 	/**
 	 * The requested controller.
@@ -29,7 +47,7 @@ class Simps_Router {
 	 *
 	 * @var string
 	 */
-	public $controller = "index";
+	public $controller = "Index";
 	
 	/**
 	 * The requested action.
@@ -54,6 +72,13 @@ class Simps_Router {
 	public $params = array();
 	
 	/**
+	 * Is the module in the URL.
+	 * 
+	 * @var boolean
+	 */
+	public $moduleInUrl = false;
+	
+	/**
 	 * Constructor.
 	 *
 	 * Store the request and determine the 
@@ -65,11 +90,27 @@ class Simps_Router {
 	 *
 	 * @param array
 	 */
-	public function __construct($request) {
+	public function __construct($request, $registeredModules) {
 		$this->request = $request;
+		$this->modules = $registeredModules;
+		$this->setModule();
 		$this->setController();
 		$this->setAction();
 		$this->setParams();
+	}
+	
+	/**
+	 * Determine and set the requested module 
+	 * from the request.
+	 *
+	 * @return void
+	 */
+	protected function setModule () {
+		$exploded = explode("/", trim($this->request['REQUEST_URI'], "/"));
+		if(in_array($exploded[0], $this->modules)) {
+			$this->module = $exploded[0];
+			$this->moduleInUrl = true;
+		}
 	}
 	
 	/**
@@ -80,9 +121,11 @@ class Simps_Router {
 	 */
 	protected function setController () {
 		$exploded = explode("/", trim($this->request['REQUEST_URI'], "/"));
-		if(!empty($exploded[0])) {
-			$this->controller = str_replace(" ", "", ucwords(str_replace("-", " ", $exploded[0])));
+		$controller = ($this->moduleInUrl) ? $exploded[1] : $exploded[0];
+		if(!empty($controller)) {
+			$this->controller = str_replace(" ", "", ucwords(str_replace("-", " ", $controller)));
 		}
+		if($this->moduleInUrl && $this->module != "default") $this->controller = ucwords($this->module) . $this->controller;
 	}
 	
 	/**
@@ -93,8 +136,9 @@ class Simps_Router {
 	 */
 	protected function setAction () {
 		$exploded = explode("/", trim($this->request['REQUEST_URI'], "/"));
-		if(!empty($exploded[1])) {
-			$action = ucwords(str_replace("-", " ", $exploded[1]));
+		$action = ($this->moduleInUrl) ? $exploded[2] : $exploded[1];
+		if(!empty($action)) {
+			$action = ucwords(str_replace("-", " ", $action));
 			$action[0] = strtolower($action[0]);
 			$this->action = str_replace(" ", "", $action);
 		}
@@ -112,6 +156,7 @@ class Simps_Router {
 		$firstParams = $firstParams[0];
 		$firstParams = explode("/", trim($firstParams, "/"));
 		unset($firstParams[0], $firstParams[1]);
+		if($this->moduleInUrl) unset($firstParams[2]);
 		if(count($firstParams)>0) {
 			$key = true;
 			$keys = array();
