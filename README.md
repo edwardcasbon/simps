@@ -7,10 +7,10 @@ With Simps you can be building web sites and applications within minutes rather 
 ## Usage - 5 simple steps
 
 1. If you're wanting to use a database connection, add those details into the config (/app/config/app.config)
-2. Put your controllers in the controllers directory (/app/controllers/) and make sure they extend the 'Simps_Controller' base class.
-3. Put your models/classes in the models directory (/app/models)
-4. Put your template layout in the layouts directory (/app/views/layouts) and update the config (/app/config/app.config) accordingly.
-5. Put your template scripts in the scripts directory (/app/views/scripts/{controller})
+2. Put your controllers in the controllers directory (/app/modules/default/controllers/) and make sure they extend the 'Simps_Controller' base class.
+3. Put your models/classes in the models directory (/app/modules/default/models)
+4. Put your template layout in the layouts directory (/app/modules/default/views/layouts) and update the config (/app/config/app.config) accordingly.
+5. Put your template scripts in the scripts directory (/app/modules/default/views/scripts/{controller})
 
 Now open it up in the browser, it's really as easy as that.
 
