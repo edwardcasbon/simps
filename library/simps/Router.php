@@ -120,7 +120,9 @@ class Simps_Router {
 	 * @return void
 	 */
 	protected function setController () {
-		$exploded = explode("/", trim($this->request['REQUEST_URI'], "/"));
+		$exploded = explode("?", $this->request['REQUEST_URI']);
+		$exploded = $exploded[0];
+		$exploded = explode("/", trim($exploded, "/"));
 		$controller = ($this->moduleInUrl) ? $exploded[1] : $exploded[0];
 		if(!empty($controller)) {
 			$this->controller = str_replace(" ", "", ucwords(str_replace("-", " ", $controller)));
