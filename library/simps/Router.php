@@ -137,7 +137,9 @@ class Simps_Router {
 	 * @return void
 	 */
 	protected function setAction () {
-		$exploded = explode("/", trim($this->request['REQUEST_URI'], "/"));
+		$exploded = explode("?", $this->request['REQUEST_URI']);
+		$exploded = $exploded[0];
+		$exploded = explode("/", trim($exploded, "/"));
 		$action = ($this->moduleInUrl) ? $exploded[2] : $exploded[1];
 		if(!empty($action)) {
 			$action = ucwords(str_replace("-", " ", $action));
