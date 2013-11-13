@@ -6,6 +6,10 @@
  * @author 	Edward Casbon <edward@edwardcasbon.co.uk>
  */
 
+// Error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', false);
+
 // Set the modules here.
 $modules = array('default', 'admin');
 $GLOBALS['modules'] = $modules;
