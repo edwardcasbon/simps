@@ -91,7 +91,7 @@ class Simps_Controller {
 		$password	= $config['password'];
 		try {
 			$db = new PDO($dsn, $user, $password);
-			$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+			$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 			return $db;
 		} catch (PDOException $exception) {
 			exit('Database connection failed: ' . $exception->getMessage() . "\n");
